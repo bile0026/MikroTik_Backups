@@ -1,4 +1,4 @@
-Role Name
+MikroTik RouterOS Backups
 =========
 
 This role will backup routeros devices and write the config to a file in /ansible_backups/mikrotik/{{ date }}. Will also cleanup configs with sed if you enter the regex lines in the vars/main.yml
