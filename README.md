@@ -1,6 +1,6 @@
 MikroTik RouterOS Backups
 
-Peforms backups of MikroTik RouterOS Devices, which will be emailed to specified email addresses.
+Peforms backups of MikroTik RouterOS Devices and will diff and create HTML files, which will be emailed to specified email addresses.
 
 Saves the configs in backup location defined in ```configs_dir``` in the vars/main.yml file. (default is /ansible_backups/mikrotik/)
 
