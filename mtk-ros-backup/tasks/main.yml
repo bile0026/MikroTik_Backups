@@ -1,0 +1,37 @@
+---
+# tasks file for mtk-ros-backup
+  - name: Export configuration
+    routeros_command:
+      commands:
+        - export
+    register: output
+#    - name: print variable
+#      debug:
+#        msg: "{{ output }}"
+
+  - name: Check to see if {{ current_date }} directory exists
+    stat:
+      path: "{{ configs_dir }}"
+    register: folder_check
+    run_once: true
+    delegate_to: localhost
+
+  - name: Create {{ current_date }} folder when it does not exist
+    file:
+      path: "{{ configs_dir }}"
+      state: directory
+      mode: 0755
+    run_once: true
+    when: folder_check.stat.exists == false
+    delegate_to: localhost
+
+  - name: Write configuration to file
+    copy:
+      content: "{{ output.stdout_lines }}"
+      dest: "{{ current_config }}"
+
+  - name: Cleanup configs
+    shell: "sed -i {{ item }} {{ current_config }}"
+    with_items: "{{ sed_commands }}"
+    delegate_to: localhost
+    when: (sed_commands is defined) and (sed_commands | length > 0)
