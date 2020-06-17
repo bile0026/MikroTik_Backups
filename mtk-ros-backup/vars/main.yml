@@ -19,4 +19,9 @@ yesterday_config: /ansible_backups/{{ platform }}/{{ yesterday_date }}/{{ invent
 
 
 # uncomment, and add additional sed commands to cleanup configs if necessary
-# sed_commands:
+sed_commands:
+  - "'s/\"//g'"
+  - "'s/,//g'"
+  - "'s/\\\\//g'"
+  - "'s/\ \//\n&/g'"
+  #- '/\ \// i\ \n'

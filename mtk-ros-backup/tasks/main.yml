@@ -5,9 +5,10 @@
       commands:
         - export
     register: output
-    #    - name: print variable
-    #      debug:
-    #        msg: "{{ output }}"
+
+  # - name: print variable
+  #   debug:
+  #     msg: "{{ output.stdout_lines[0] }}"
 
   - name: Check to see if {{ current_date }} directory exists
     stat:
@@ -27,7 +28,7 @@
 
   - name: Write configuration to file
     copy:
-      content: "{{ output.stdout_lines }}"
+      content: "{{ output.stdout_lines[0] }}"
       dest: "{{ current_config }}"
 
   - name: Cleanup configs
@@ -35,6 +36,8 @@
     with_items: "{{ sed_commands }}"
     delegate_to: localhost
     when: (sed_commands is defined) and (sed_commands | length > 0)
+    register: sed_result
+    failed_when: sed_result.rc > 1
 
   - name: Check for Diffs
     shell: diff -B {{ current_config }} {{ yesterday_config }}
