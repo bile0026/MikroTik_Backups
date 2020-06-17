@@ -8,4 +8,4 @@ Modify SED commands as approprate in your environment to cleanup dynamic lines i
 Make sure not to modify any of the SED commands that are there now, as they cleanup the config file from the raw export.
 
 Current Issues:
-SED commands required for splitting output into lines.
+* SED commands required for splitting output into lines.
