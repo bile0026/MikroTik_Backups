@@ -1,8 +1,22 @@
 ---
-- name: Backup RouterOS Devices to file
-  hosts: mtk1
+- name: Check for online hosts
+  hosts: all
   gather_facts: false
-  strategy: free
+
+  tasks:
+    - name: Ping for reachability
+      command: ping -c1 {{ inventory_hostname }}
+      delegate_to: localhost
+      register: ping_result
+      ignore_errors: true
+
+    - group_by: key=reachable
+      when: ping_result.rc == 0
+
+
+- name: Backup RouterOS Devices to file
+  hosts: reachable
+  gather_facts: false
   vars:
 # I recommend setting the timeout to two minutes or even longer depending on how long it takes the device to pull the file.
     ansible_command_timeout: 120
