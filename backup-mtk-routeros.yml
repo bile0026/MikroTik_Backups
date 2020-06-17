@@ -1,6 +1,6 @@
 ---
 - name: Check for online hosts
-  hosts: all
+  hosts: mikrotik
   gather_facts: false
 
   tasks:
