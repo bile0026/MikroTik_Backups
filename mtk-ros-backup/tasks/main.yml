@@ -32,7 +32,7 @@
       dest: "{{ current_config }}"
 
   - name: Cleanup configs
-    shell: "sed -i {{ item }} {{ current_config }}"
+    shell: "sed -i -r '{{ item }}' {{ current_config }}"
     with_items: "{{ sed_commands }}"
     delegate_to: localhost
     when: (sed_commands is defined) and (sed_commands | length > 0)
