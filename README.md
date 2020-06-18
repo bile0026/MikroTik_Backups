@@ -9,3 +9,4 @@ Make sure not to modify any of the SED commands that are there now, as they clea
 
 Current Issues:
 * SED command to remove the \\ and multiple spaces only removes the \\, it doesn't remove the spaces.
+* May not properly handle custom scripts in the config.
