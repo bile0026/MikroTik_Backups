@@ -17,14 +17,12 @@ yesterday_config: /ansible_backups/{{ platform }}/{{ yesterday_date }}/{{ invent
   # - email@example.com
 # from_email: email@example.com
 
-
-# uncomment, and add additional sed commands to cleanup configs if necessary
+# uncomment, and add additional sed commands to cleanup configs if necessary do not change any of the pre-existing commands
 sed_commands:
-  #- '/^\[/d'
-  #- '/\]$/d'
-  #- 's/\",\ \"//d'
+  - 's/^\[//g'
+  - 's/\]$//g'
+  - 's/\",//g'
   - 's/\"//g'
-  - 's/,\ //g'
-  #- "'s/\\\\//g'"
-  #- "'s/\ \//\n&/g'"
-  #- '/\ \// i\ \n'
+  - 's/\\//g'
+  - 's/\\{2}\s+//g'
+  - 's/\s\//\n\//g'
