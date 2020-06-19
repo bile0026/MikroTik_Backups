@@ -19,11 +19,13 @@
 
   - name: Create {{ current_date }} folder when it does not exist
     file:
-      path: "{{ configs_dir }}"
+      path: "{{ item }}"
       state: directory
       mode: 0755
     run_once: true
-    when: folder_check.stat.exists == false
+    with_items:
+      - "{{ config_dir }}"
+      - "{{ diff_directory }}"
     delegate_to: localhost
 
   - name: Write configuration to file
@@ -49,7 +51,7 @@
       - diffs
 
   - name: Make diff report files
-    shell: vimdiff {{ yesterday_config }} {{ current_config }} -c TOhtml  -c 'w! /tmp/{{ inventory_hostname }}_{{ current_date }}.html' -c 'qa!'
+    shell: vimdiff {{ yesterday_config }} {{ current_config }} -c TOhtml  -c 'w! {{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html' -c 'qa!'
     failed_when: "diff_output.rc > 1"
     delegate_to: localhost
     register: diff_output
