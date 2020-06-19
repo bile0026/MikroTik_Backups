@@ -10,8 +10,8 @@ config_dir: /ansible_backups/{{ platform }}/{{ current_date }}
 # ansible_ssh_user: XXXXXXXX
 # ansible_ssh_pass: XXXXXXXX
 current_config_dir: /ansible_backups/{{ platform }}/{{ current_date }}
-current_config: /ansible_backups/{{ platform }}/{{ current_date }}/{{ inventory_hostname }}_{{ current_date }}
-yesterday_config: /ansible_backups/{{ platform }}/{{ yesterday_date }}/{{ inventory_hostname }}_{{ yesterday_date }}
+current_config: /ansible_backups/{{ platform }}/{{ current_date }}/{{ inventory_hostname }}_{{ current_date }}.txt
+yesterday_config: /ansible_backups/{{ platform }}/{{ yesterday_date }}/{{ inventory_hostname }}_{{ yesterday_date }}.txt
 diff_directory: /ansible_backups/{{ platform }}_diffs/{{ current_date }}
 # smtp_server: smtp.example.com
 # email_addresses:
