@@ -6,17 +6,6 @@
         - export
     register: output
 
-  # - name: print variable
-  #   debug:
-  #     msg: "{{ output.stdout_lines[0] }}"
-
-  - name: Check to see if {{ current_date }} directory exists
-    stat:
-      path: "{{ config_dir }}"
-    register: folder_check
-    run_once: true
-    delegate_to: localhost
-
   - name: Create {{ current_date }} folder when it does not exist
     file:
       path: "{{ item }}"
