@@ -47,11 +47,11 @@
 
   - name: Make diff report files
     shell: vimdiff {{ yesterday_config }} {{ current_config }} -c TOhtml  -c 'w! {{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html' -c 'qa!'
-    #failed_when: "diff_output.rc > 1"
+    failed_when: "diff_output.rc > 1"
     delegate_to: localhost
     register: diff_output
     when: diff_result.rc == 1
-    #notify: email diffs
+    notify: email diffs
     async: 360
     poll: 30
     tags:
