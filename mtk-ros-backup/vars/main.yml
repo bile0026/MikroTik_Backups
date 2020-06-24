@@ -17,13 +17,3 @@ diff_directory: /ansible_backups/{{ platform }}_diffs/{{ current_date }}
 # email_addresses:
   # - email@example.com
 # from_email: email@example.com
-
-# uncomment, and add additional sed commands to cleanup configs if necessary do not change any of the pre-existing commands
-sed_commands:
-  - 's/^\[//g'
-  - 's/\]$//g'
-  - 's/\",//g'
-  - 's/\"//g'
-  - 's/\\//g'
-  - 's/\\{2}\s+//g'
-  - 's/\s\//\n\//g'
