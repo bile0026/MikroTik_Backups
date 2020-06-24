@@ -1,0 +1,4 @@
+# I recommend setting the timeout to two minutes or even longer depending on how long it takes the device to pull the file.
+ansible_command_timeout: 120
+ansible_connection: network_cli
+ansible_network_os: routeros
