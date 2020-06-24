@@ -10,7 +10,8 @@
       register: ping_result
       ignore_errors: true
 
-    - group_by: key=reachable
+    - group_by:
+        key: reachable
       when: ping_result.rc == 0
 
 
