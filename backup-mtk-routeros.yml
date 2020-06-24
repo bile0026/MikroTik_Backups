@@ -18,9 +18,5 @@
 - name: Backup RouterOS Devices to file
   hosts: reachable
   gather_facts: false
-  vars:
-# I recommend setting the timeout to two minutes or even longer depending on how long it takes the device to pull the file.
-    ansible_command_timeout: 120
-
   roles:
     - mtk-ros-backup
