@@ -5,7 +5,7 @@
 
   tasks:
     - name: Ping for reachability
-      command: ping -c1 {{ inventory_hostname }}
+      command: ping -c1 {{ ansible_host }}
       delegate_to: localhost
       register: ping_result
       ignore_errors: true
