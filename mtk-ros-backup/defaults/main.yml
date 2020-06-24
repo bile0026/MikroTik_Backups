@@ -1,2 +1,5 @@
 ---
 # defaults file for mtk-ros-backup
+ansible_command_timeout: 120
+ansible_connection: network_cli
+ansible_network_os: routeros
