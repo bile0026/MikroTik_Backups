@@ -6,6 +6,11 @@
         - export
     register: output
 
+  - name: Ensure vim is installed for diff output
+    package:
+      name: vim
+      state: present
+
   - name: Create {{ current_date }} folder when it does not exist
     file:
       path: "{{ item }}"
