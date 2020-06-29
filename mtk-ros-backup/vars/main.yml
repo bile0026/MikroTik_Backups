@@ -16,4 +16,4 @@ diff_directory: /ansible_backups/{{ platform }}_diffs/{{ current_date }}
 # from_email: email@example.com
 
 sed_commands:
-  - '[a-z]+\/[0-9]+\/[0-9]+\ [0-9]+:[0-9]+:[0-9]+/' # removes date from the first line in the config
+  - 's/[a-z]+\/[0-9]+\/[0-9]+\ [0-9]+:[0-9]+:[0-9]+//' # removes date from the first line in the config
