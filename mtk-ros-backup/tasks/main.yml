@@ -11,6 +11,7 @@
       name: vim
       state: present
     delegate_to: localhost
+    run_once: true
 
   - name: Create {{ current_date }} folder when it does not exist
     file:
