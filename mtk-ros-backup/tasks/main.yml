@@ -35,6 +35,12 @@
     register: check_result
     delegate_to: localhost
 
+  - name: Cleanup configs
+    shell: "sed -i -r '{{ item }}' {{ current_config }}"
+    with_items: "{{ sed_commands }}"
+    delegate_to: localhost
+    tags: cleanup
+
   - name: Check for Diffs
     shell: diff -B {{ current_config }} {{ yesterday_config }}
     failed_when: diff_result.rc > 1
