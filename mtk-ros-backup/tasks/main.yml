@@ -6,38 +6,27 @@
         - export
     register: output
 
-  # - name: print variable
-  #   debug:
-  #     msg: "{{ output.stdout_lines[0] }}"
-
-  - name: Check to see if {{ current_date }} directory exists
-    stat:
-      path: "{{ configs_dir }}"
-    register: folder_check
-    run_once: true
-    delegate_to: localhost
-
   - name: Create {{ current_date }} folder when it does not exist
     file:
-      path: "{{ configs_dir }}"
+      path: "{{ item }}"
       state: directory
       mode: 0755
     run_once: true
-    when: folder_check.stat.exists == false
+    with_items:
+      - "{{ config_dir }}"
+      - "{{ diff_directory }}"
     delegate_to: localhost
 
   - name: Write configuration to file
     copy:
-      content: "{{ output.stdout_lines[0] }}"
+      content: "{{ output.stdout_lines[0] | join('\n') }}"
       dest: "{{ current_config }}"
 
-  - name: Cleanup configs
-    shell: "sed -i {{ item }} {{ current_config }}"
-    with_items: "{{ sed_commands }}"
+  - name: Check if yesterday's configuration exists
+    stat:
+      path: "{{ yesterday_config }}"
+    register: check_result
     delegate_to: localhost
-    when: (sed_commands is defined) and (sed_commands | length > 0)
-    register: sed_result
-    failed_when: sed_result.rc > 1
 
   - name: Check for Diffs
     shell: diff -B {{ current_config }} {{ yesterday_config }}
@@ -45,17 +34,20 @@
     register: diff_result
     delegate_to: localhost
     ignore_errors: true
+    when: check_result.stat.exists
     tags:
       - diffs
 
   - name: Make diff report files
-    shell: vimdiff -n {{ yesterday_config }} {{ current_config }} -c TOhtml  -c 'w! /tmp/{{ inventory_hostname }}_{{ current_date }}.html' -c 'qa!'
+    shell: vimdiff -n {{ yesterday_config }} {{ current_config }} -c TOhtml  -c 'w! {{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html' -c 'qa!'
     failed_when: "diff_output.rc > 1"
     delegate_to: localhost
     register: diff_output
-    when: diff_result.rc == 1
+    when:
+      - check_result.stat.exists
+      - diff_result.rc == 1
     notify: email diffs
-    async: 120
+    async: 360
     poll: 30
     tags:
       - reports

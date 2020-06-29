@@ -7,13 +7,15 @@
       subject: Diff report for {{ inventory_hostname }}
       subtype: html
       host: "{{ smtp_server }}"
-      attach: /tmp/{{ inventory_hostname }}_{{ current_date }}.html
+      attach: /diff_directory/{{ inventory_hostname }}_{{ current_date }}.html
     delegate_to: localhost
-    when: diff_result.rc != 0
+    when:
+      - smtp_server is defined
+      - diff_result.rc != 0
 
-  - name: remove temp files
-    file:
-      state: absent
-      path: "/tmp/{{ inventory_hostname }}_{{ current_date }}.html"
-    delegate_to: localhost
-    listen: email diffs
+  # - name: remove temp files
+  #   file:
+  #     state: absent
+  #     path: "/tmp/{{ inventory_hostname }}_{{ current_date }}.html"
+  #   delegate_to: localhost
+  #   listen: email diffs
