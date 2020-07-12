@@ -17,3 +17,5 @@ diff_directory: /ansible_backups/{{ platform }}_diffs/{{ current_date }}
 
 sed_commands:
   - 's/[a-z]+\/[0-9]+\/[0-9]+\ [0-9]+:[0-9]+:[0-9]+//' # removes date from the first line in the config
+  - 's/.+login failure.+//' # removes "invalid login" echos that sometimes happen
+  - 's/^.+via winbox$//' # removes the second line of echos for "invalid login" add additonal "via" statements if you have others besides winbox
