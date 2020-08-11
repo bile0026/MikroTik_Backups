@@ -6,11 +6,14 @@
         - export
     register: output
 
-  - name: Ensure vim is installed for diff output
+  - name: Ensure package dependencies are installed
     package:
-      name: vim
+      name:
+        - vim
+        - diffutils
       state: present
     delegate_to: localhost
+    become: true
     run_once: true
 
   - name: Create {{ current_date }} folder when it does not exist
