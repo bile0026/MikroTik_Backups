@@ -20,6 +20,7 @@
     state: present
   delegate_to: localhost
   when: ansible_os_family == 'RedHat'
+  use_backend: yum
   become: true
   run_once: true
 
