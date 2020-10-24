@@ -6,34 +6,34 @@
       - export
   register: output
 
-- name: Gather facts for Ansible host machine
-  setup:
-    gather_subset: all
-  run_once: True
-  delegate_to: localhost
+# - name: Gather facts for Ansible host machine
+#   setup:
+#     gather_subset: all
+#   run_once: True
+#   delegate_to: localhost
 
-- name: Ensure package dependencies are installed RedHat
-  yum:
-    name:
-      - vim
-      - diffutils
-    state: present
-    use_backend: yum
-  delegate_to: localhost
-  when: ansible_os_family == 'RedHat'
-  become: true
-  run_once: true
+# - name: Ensure package dependencies are installed RedHat
+#   yum:
+#     name:
+#       - vim
+#       - diffutils
+#     state: present
+#     use_backend: yum
+#   delegate_to: localhost
+#   when: ansible_os_family == 'RedHat'
+#   become: true
+#   run_once: true
 
-- name: Ensure package dependencies are installed Debian
-  apt:
-    name:
-      - vim
-      - diffutils
-    state: present
-  delegate_to: localhost
-  when: ansible_os_family == 'Debian'
-  become: true
-  run_once: true
+# - name: Ensure package dependencies are installed Debian
+#   apt:
+#     name:
+#       - vim
+#       - diffutils
+#     state: present
+#   delegate_to: localhost
+#   when: ansible_os_family == 'Debian'
+#   become: true
+#   run_once: true
 
 - name: Create {{ current_date }} folder when it does not exist
   file:
