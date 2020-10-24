@@ -9,6 +9,7 @@
 - name: Gather facts for Ansible host machine
   setup:
     gather_subset: all
+  run_once: True
   delegate_to: localhost
 
 - name: Ensure package dependencies are installed
