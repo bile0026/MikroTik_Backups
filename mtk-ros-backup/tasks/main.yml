@@ -1,69 +1,74 @@
 ---
 # tasks file for mtk-ros-backup
-  - name: Export configuration
-    routeros_command:
-      commands:
-        - export
-    register: output
+- name: Export configuration
+  routeros_command:
+    commands:
+      - export
+  register: output
 
-  - name: Ensure package dependencies are installed
-    package:
-      name:
-        - vim
-        - diffutils
-      state: present
-    delegate_to: localhost
-    become: true
-    run_once: true
+- name: Gather facts for Ansible host machine
+  setup:
+    gather_subset: all
+  delegate_to: localhost
 
-  - name: Create {{ current_date }} folder when it does not exist
-    file:
-      path: "{{ item }}"
-      state: directory
-      mode: 0755
-    run_once: true
-    with_items:
-      - "{{ config_dir }}"
-      - "{{ diff_directory }}"
-    delegate_to: localhost
+- name: Ensure package dependencies are installed
+  package:
+    name:
+      - vim
+      - diffutils
+    state: present
+  delegate_to: localhost
+  become: true
+  run_once: true
 
-  - name: Write configuration to file
-    copy:
-      content: "{{ output.stdout_lines[0] | join('\n') }}"
-      dest: "{{ current_config }}"
+- name: Create {{ current_date }} folder when it does not exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  run_once: true
+  with_items:
+    - "{{ config_dir }}"
+    - "{{ diff_directory }}"
+  delegate_to: localhost
 
-  - name: Check if yesterday's configuration exists
-    stat:
-      path: "{{ yesterday_config }}"
-    register: check_result
-    delegate_to: localhost
+- name: Write configuration to file
+  copy:
+    content: "{{ output.stdout_lines[0] | join('\n') }}"
+    dest: "{{ current_config }}"
 
-  - name: Cleanup configs
-    shell: "sed -i -r '{{ item }}' {{ current_config }}"
-    with_items: "{{ sed_commands }}"
-    delegate_to: localhost
-    tags: cleanup
+- name: Check if yesterday's configuration exists
+  stat:
+    path: "{{ yesterday_config }}"
+  register: check_result
+  delegate_to: localhost
 
-  - name: Check for Diffs
-    shell: diff -B {{ current_config }} {{ yesterday_config }}
-    failed_when: diff_result.rc > 1
-    register: diff_result
-    delegate_to: localhost
-    ignore_errors: true
-    when: check_result.stat.exists
-    tags:
-      - diffs
+- name: Cleanup configs
+  shell: "sed -i -r '{{ item }}' {{ current_config }}"
+  with_items: "{{ sed_commands }}"
+  delegate_to: localhost
+  tags: cleanup
 
-  - name: Make diff report files
-    shell: vimdiff -n {{ yesterday_config }} {{ current_config }} -c TOhtml  -c 'w! {{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html' -c 'qa!'
-    failed_when: "diff_output.rc > 1"
-    delegate_to: localhost
-    register: diff_output
-    when:
-      - check_result.stat.exists
-      - diff_result.rc == 1
-    notify: email diffs
-    async: 360
-    poll: 30
-    tags:
-      - reports
+- name: Check for Diffs
+  shell: diff -B {{ current_config }} {{ yesterday_config }}
+  failed_when: diff_result.rc > 1
+  register: diff_result
+  delegate_to: localhost
+  ignore_errors: true
+  when: check_result.stat.exists
+  tags:
+    - diffs
+
+- name: Make diff report files
+  shell: vimdiff -n {{ yesterday_config }} {{ current_config }} -c TOhtml  -c 'w! {{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html' -c 'qa!'
+  failed_when: "diff_output.rc > 1"
+  delegate_to: localhost
+  register: diff_output
+  when:
+    - check_result.stat.exists
+    - diff_result.rc == 1
+  notify: email diffs
+  async: 360
+  poll: 30
+  tags:
+    - reports
