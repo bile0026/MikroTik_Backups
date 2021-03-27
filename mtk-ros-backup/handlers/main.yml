@@ -11,8 +11,8 @@
     attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
   delegate_to: localhost
   when:
-    - not smtp_username is defined
-    - not smtp_password is defined
+    - smtp_username is not defined
+    - smtp_password is not defined
     - smtp_server is defined
     - diff_result.rc != 0
 
