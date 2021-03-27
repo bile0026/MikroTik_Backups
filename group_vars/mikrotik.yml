@@ -4,7 +4,7 @@ ansible_command_timeout: 120
 ansible_connection: network_cli
 ansible_network_os: routeros
 ansible_python_interpreter: /usr/bin/python3
-
+smtp_port: 25
 # If your account information is the same across all routers, you can uncomment this.  Otherwise its best to set username and password in the hosts file
 # By adding the +cet512w to the end of the username, you can change the terminal width that Ansible uses.  If desired, this will more of your commands to use 1 line version many in the config output
 #ansible_username: ansible+cet512w
