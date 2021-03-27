@@ -11,6 +11,26 @@
     attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
   delegate_to: localhost
   when:
+    - not smtp_username is defined
+    - not smtp_password is defined
+    - smtp_server is defined
+    - diff_result.rc != 0
+
+- name: email diffs
+  mail:
+    from: "{{ from_email }}"
+    to: "{{ email_addresses }}"
+    subject: Diff report for {{ inventory_hostname }}
+    subtype: html
+    host: "{{ smtp_server }}"
+    port: "{{ smtp_port }}"
+    username: "{{ smtp_username }}"
+    password: "{{ smtp_password }}"
+    attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
+  delegate_to: localhost
+  when:
+    - smtp_username is defined
+    - smtp_password is defined
     - smtp_server is defined
     - diff_result.rc != 0
 # - name: remove temp files
