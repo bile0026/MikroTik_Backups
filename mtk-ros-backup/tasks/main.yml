@@ -81,8 +81,42 @@
   when:
     - check_result.stat.exists
     - diff_result.rc == 1
-  notify: email diffs
+  # notify: email diffs
   async: 360
   poll: 30
   tags:
     - reports
+
+- name: Email Diff files anonymous SMTP
+  mail:
+    from: "{{ from_email }}"
+    to: "{{ email_addresses }}"
+    subject: Diff report for {{ inventory_hostname }}
+    subtype: html
+    host: "{{ smtp_server }}"
+    port: "{{ smtp_port }}"
+    attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
+  delegate_to: localhost
+  when:
+    - smtp_username is not defined
+    - smtp_password is not defined
+    - smtp_server is defined
+    - diff_result.rc != 0
+
+- name: Email Diff files authenticated SMTP
+  mail:
+    from: "{{ from_email }}"
+    to: "{{ email_addresses }}"
+    subject: Diff report for {{ inventory_hostname }}
+    subtype: html
+    host: "{{ smtp_server }}"
+    port: "{{ smtp_port }}"
+    username: "{{ smtp_username }}"
+    password: "{{ smtp_password }}"
+    attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
+  delegate_to: localhost
+  when:
+    - smtp_username is defined
+    - smtp_password is defined
+    - smtp_server is defined
+    - diff_result.rc != 0
