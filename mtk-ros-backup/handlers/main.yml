@@ -9,7 +9,7 @@
     subtype: html
     host: "{{ smtp_server }}"
     port: "{{ smtp_server_port }}"
-    secure: never
+    secure: try
     username: "{{ smtp_username }}"
     password: "{{ smtp_password }}"
     attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
@@ -28,7 +28,7 @@
     subtype: html
     host: "{{ smtp_server }}"
     port: "{{ smtp_server_port }}"
-    secure: never
+    secure: try
     attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
   delegate_to: localhost
   when:
