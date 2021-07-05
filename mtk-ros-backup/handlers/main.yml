@@ -9,6 +9,7 @@
     subtype: html
     host: "{{ smtp_server }}"
     port: "{{ smtp_server_port }}"
+    secure: never
     username: "{{ smtp_username }}"
     password: "{{ smtp_password }}"
     attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
