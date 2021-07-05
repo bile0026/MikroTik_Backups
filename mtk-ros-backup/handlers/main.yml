@@ -28,6 +28,7 @@
     subtype: html
     host: "{{ smtp_server }}"
     port: "{{ smtp_server_port }}"
+    secure: never
     attach: /{{ diff_directory }}/{{ inventory_hostname }}_{{ current_date }}.html
   delegate_to: localhost
   when:
