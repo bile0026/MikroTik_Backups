@@ -1,7 +1,7 @@
 ---
 # handlers file for mtk-ros-backup
 
-- name: email diffs (authenticated)
+- name: email diffs
   mail:
     from: "{{ from_email }}"
     to: "{{ email_addresses }}"
@@ -19,7 +19,7 @@
     - smtp_password is defined
     - diff_result.rc != 0
 
-- name: email diffs (no auth)
+- name: email diffs
   mail:
     from: "{{ from_email }}"
     to: "{{ email_addresses }}"
