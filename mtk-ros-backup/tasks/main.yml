@@ -15,6 +15,7 @@
   delegate_to: localhost
   become: true
   run_once: true
+  when: install_prerequisites
 
 - name: Create {{ current_date }} folder when it does not exist
   file:
