@@ -12,6 +12,9 @@ ansible_user=ansible+cet512w
 ```
 In this example, the router username is ansible and it changes the width of the terminal to `512`.  This allows for a much longer output line if desired.  This won't have an effect on User Scripts, as routeros will break them down into multiple lines regardless of this setting if they contain new lines within the script itself.
 
+### Options
+You can enable the install prerequisite job once to get them installed on your ansible server, by setting `install_prerequisites: true`. Then leave disabled after the first run. This doesn't need to happen on a regular basis.
+
 ### Hosts File
 You will need to create a hosts file.  Most people use 'hosts'.  Here is an example of what it may contain
 ```
