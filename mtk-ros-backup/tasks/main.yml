@@ -101,6 +101,7 @@
     - smtp_username is not defined
     - smtp_password is not defined
     - smtp_server is defined
+    - diff_result is defined
     - diff_result.rc != 0
 
 - name: Email Diff files authenticated SMTP
@@ -119,4 +120,5 @@
     - smtp_username is defined
     - smtp_password is defined
     - smtp_server is defined
+    - diff_result is defined
     - diff_result.rc != 0
