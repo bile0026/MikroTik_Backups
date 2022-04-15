@@ -80,6 +80,7 @@
   register: diff_output
   when:
     - check_result.stat.exists
+    - diff_result.rc is defined
     - diff_result.rc == 1
   # notify: email diffs
   async: 360
@@ -101,7 +102,7 @@
     - smtp_username is not defined
     - smtp_password is not defined
     - smtp_server is defined
-    - diff_result is defined
+    - diff_result.rc is defined
     - diff_result.rc != 0
 
 - name: Email Diff files authenticated SMTP
@@ -120,5 +121,5 @@
     - smtp_username is defined
     - smtp_password is defined
     - smtp_server is defined
-    - diff_result is defined
+    - diff_result.rc is defined
     - diff_result.rc != 0
