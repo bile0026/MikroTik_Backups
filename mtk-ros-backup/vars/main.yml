@@ -12,10 +12,11 @@ yesterday_config: /ansible_backups/{{ platform }}/{{ yesterday_date }}/{{ invent
 diff_directory: /ansible_backups/{{ platform }}_diffs/{{ current_date }}
 # smtp_server: smtp.example.com
 # email_addresses:
-  # - email@example.com
+# - email@example.com
 # from_email: email@example.com
 
 sed_commands:
   - 's/[a-z]+\/[0-9]+\/[0-9]+\ [0-9]+:[0-9]+:[0-9]+//' # removes date from the first line in the config
-  - 's/.+login failure.+//' # removes "invalid login" echos that sometimes happen
-  - 's/^.+via winbox$//' # removes the second line of echos for "invalid login" add additonal "via" statements if you have others besides winbox
+  - "s/.+login failure.+//" # removes "invalid login" echos that sometimes happen
+  - "s/^.+via winbox$//" # removes the second line of echos for "invalid login" add additonal "via" statements if you have others besides winbox
+  - "s/^add address.*comment=(SpamHaus|DShield|malc0de) list.blacklist$//" # removes dynamic address-list entries if using joshaven potter's blacklist scripts.
